@@ -3888,6 +3888,14 @@
                 "data": {
                     "command": "puffish_skills category unlock @s simplyskills:crusader"
                 }
+            },
+            {
+                "type": "puffish_skills:attribute",
+                "data": {
+                    "attribute": "spell_power:healing",
+                    "value": 1,
+                    "operation": "addition"
+                }
             }
         ]
     },
@@ -4396,6 +4404,14 @@
                 "type": "puffish_skills:command",
                 "data": {
                     "command": "puffish_skills category unlock @s simplyskills:cleric"
+                }
+            },
+            {
+                "type": "puffish_skills:attribute",
+                "data": {
+                    "attribute": "spell_power:healing",
+                    "value": 1,
+                    "operation": "addition"
                 }
             }
         ]

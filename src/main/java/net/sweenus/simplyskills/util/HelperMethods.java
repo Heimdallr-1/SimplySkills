@@ -34,6 +34,7 @@ import net.minecraft.util.math.Box;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.puffish.attributesmod.AttributesMod;
+import net.puffish.attributesmod.util.Sign;
 import net.puffish.skillsmod.api.Category;
 import net.puffish.skillsmod.api.Skill;
 import net.puffish.skillsmod.api.SkillsAPI;
@@ -620,11 +621,20 @@ public class HelperMethods {
         double soul = SpellPower.getSpellPower(SpellSchools.SOUL, player).baseValue();
         double healing = SpellPower.getSpellPower(SpellSchools.HEALING, player).baseValue();
         double lightning = SpellPower.getSpellPower(SpellSchools.LIGHTNING, player).baseValue();
-        double ranged = player.getAttributeValue(AttributesMod.RANGED_DAMAGE);
 
-        Double[] attributeValues = {attackDamage, toughness, fire, arcane, soul, healing, lightning, ranged};
+        Double[] attributeValues = {attackDamage, toughness, fire, arcane, soul, healing, lightning};
 
         return Arrays.stream(attributeValues).max(Comparator.naturalOrder()).orElse(Double.MIN_VALUE);
+    }
+
+    public static double getRelativeRangedAttribute(PlayerEntity player) {
+        var dealtDamage = 1;
+        var rangedDamage = AttributesMod.applyAttributeModifiers(
+                dealtDamage,
+                Sign.POSITIVE.wrap(player.getAttributeInstance(AttributesMod.RANGED_DAMAGE))
+        );
+        //System.out.println(rangedDamage);
+        return player.getAttributeValue(AttributesMod.RANGED_DAMAGE);
     }
 
     public static double getHighestSpecificAttributeValue(PlayerEntity player, EntityAttribute... attributes) {

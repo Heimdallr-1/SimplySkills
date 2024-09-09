@@ -95,6 +95,7 @@ public class SoundRegistry {
     public static SoundEvent DARK_WHIRLWIND_WHOOSH = register("dark_whirlwind_whoosh");
     public static SoundEvent ENERGY_CHARGE = register("energy_charge");
     public static SoundEvent MAW = register("maw");
+    public static SoundEvent ACTIVATE_PLINTH_01 = register("activate_plinth_01");
 
     public static void registerSounds() {
     }

@@ -18,6 +18,7 @@ import net.minecraft.network.packet.s2c.play.CustomPayloadS2CPacket;
 import net.minecraft.predicate.entity.EntityPredicates;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
+import net.minecraft.text.Text;
 import net.minecraft.util.Hand;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
@@ -308,7 +309,10 @@ public class SignatureAbilities {
                 }
                 if (HelperMethods.isUnlocked(ascendancyTree,
                         SkillReferencePosition.ascendancyChainbreaker, player)) {
-                    ability_success = AscendancyAbilities.chainbreaker(player);
+                    if (ascendancyTree.equals("puffish_skills:prom")) {
+                        ability_success = ProminenceAbilities.promDissonance(player);
+                    }
+                    else {ability_success = AscendancyAbilities.chainbreaker(player);}
                     ability = "Chainbreaker";
                 }
             }

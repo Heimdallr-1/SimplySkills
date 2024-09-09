@@ -15,6 +15,7 @@ import net.minecraft.registry.Registries;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
+import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.Box;
 import net.sweenus.simplyskills.SimplySkills;
@@ -136,38 +137,53 @@ public class ProminenceAbilities {
     }
 
     public static boolean promDissonance(PlayerEntity player) {
-        ServerWorld world = (ServerWorld) player.getWorld();
+        if (!(player.getWorld() instanceof ServerWorld world)) {
+            return false;
+        }
+
         int corruption = AscendancyAbilities.getAscendancyPoints(player);
         int radius = 6;
         int frequency = 20;
         int duration = 160 + corruption;
         int stunDuration = 40 + (corruption / 2);
         StatusEffect stunEffect = StatusEffects.SLOWNESS;
-        if (Registries.STATUS_EFFECT.get(new Identifier("minecells:stunned")) != null)
-            stunEffect = Registries.STATUS_EFFECT.get(new Identifier("minecells:stunned"));
+
+        StatusEffect minecellsStunned = Registries.STATUS_EFFECT.get(new Identifier("minecells:stunned"));
+        if (minecellsStunned != null) {
+            stunEffect = minecellsStunned;
+        }
 
         List<StatusEffect> statusEffects = player.getStatusEffects().stream()
                 .map(StatusEffectInstance::getEffectType)
                 .toList();
 
-        if (statusEffects.contains(EffectRegistry.MELODYOFBLOODLUST))
+
+        if (statusEffects.contains(EffectRegistry.MELODYOFBLOODLUST)) {
             ProminenceInternalAbilities.giveAreaBuffs(player, radius, frequency, duration, null, 0, null, 0, StatusEffects.MINING_FATIGUE, 0, StatusEffects.WEAKNESS, 0);
+        }
         if (statusEffects.contains(EffectRegistry.MELODYOFPROTECTION)) {
             ProminenceInternalAbilities.giveAreaBuffs(player, radius, frequency, duration, null, 0, null, 0, StatusEffects.WEAKNESS, 0, null, 1);
             ProminenceInternalAbilities.giveAreaBuffs(player, radius, frequency, 20, null, 0, null, 0, null, 0, StatusEffects.INSTANT_DAMAGE, 1);
         }
-        if (statusEffects.contains(EffectRegistry.MELODYOFCONCENTRATION))
+        if (statusEffects.contains(EffectRegistry.MELODYOFCONCENTRATION)) {
             ProminenceInternalAbilities.giveAreaBuffs(player, radius, frequency, duration, null, 0, null, 0, StatusEffects.MINING_FATIGUE, 0, StatusEffects.SLOWNESS, 0);
-        if (statusEffects.contains(EffectRegistry.MELODYOFWAR))
+        }
+        if (statusEffects.contains(EffectRegistry.MELODYOFWAR)) {
             ProminenceInternalAbilities.giveAreaBuffs(player, radius, frequency, duration, null, 0, null, 0, StatusEffects.WEAKNESS, 0, StatusEffects.WITHER, 1);
-        if (statusEffects.contains(EffectRegistry.MELODYOFSAFETY))
+        }
+        if (statusEffects.contains(EffectRegistry.MELODYOFSAFETY)) {
             ProminenceInternalAbilities.giveAreaBuffs(player, radius, frequency, duration, null, 0, null, 0, StatusEffects.WITHER, 3, null, 0);
-        if (statusEffects.contains(EffectRegistry.MELODYOFSWIFTNESS))
+        }
+        if (statusEffects.contains(EffectRegistry.MELODYOFSWIFTNESS)) {
             ProminenceInternalAbilities.giveAreaBuffs(player, radius, frequency, duration, null, 0, null, 0, StatusEffects.SLOWNESS, 2, null, 0);
+        }
 
         ProminenceInternalAbilities.giveAreaBuffs(player, radius, frequency, stunDuration, null, 0, null, 0, stunEffect, 0, null, 0);
         HelperMethods.spawnOrbitParticles(world, player.getPos(), ParticleTypes.NOTE, radius, 20);
+        HelperMethods.spawnOrbitParticles(world, player.getPos(), ParticleTypes.CRIT, radius, 16);
         HelperMethods.spawnOrbitParticles(world, player.getPos(), ParticleTypes.NOTE, 0.5, 8);
+        player.getWorld().playSoundFromEntity(null, player, SoundRegistry.ACTIVATE_PLINTH_01,
+                SoundCategory.PLAYERS, 0.4f, 1.0f);
 
         return true;
     }

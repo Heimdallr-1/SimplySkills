@@ -433,5 +433,10 @@
     "sounds": [
       "simplyskills:maw"
     ]
+  },
+  "activate_plinth_01": {
+    "sounds": [
+      "simplyskills:activate_plinth_01"
+    ]
   }
 }

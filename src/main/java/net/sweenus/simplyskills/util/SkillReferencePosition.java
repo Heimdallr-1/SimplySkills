@@ -294,7 +294,7 @@ public class SkillReferencePosition {
     public static String ascendancyGhostwalk = "n04zw9wy6wtnbcs6";
     public static String ascendancySkywardSunder = "m9xj5d6nb1bfpou8";
     public static String ascendancyRighteousShield = "jltm2vtk7wm4krdp";
-    public static String ascendancyChainbreaker = "c97wxgqn3utj7y01";
+    public static String ascendancyChainbreaker = "c97wxgqn3utj7y01"; // Also used for Prom Bard active
 
 
 
@@ -304,6 +304,7 @@ public class SkillReferencePosition {
     public static String promTwinstrike = "v7hqganjx5ftv14x";
     public static String promFocus = "9909dkhylopdfpk7";
     public static String promWarriorsDevotion = "bdqexitrgpz9phaw";
+    public static String promBardPassive = "sh0mgsrhdh16jls7";
 
 
 }

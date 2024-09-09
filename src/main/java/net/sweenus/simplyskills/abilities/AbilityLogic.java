@@ -264,6 +264,8 @@ public class AbilityLogic {
     }
 
     public static void doMeleeOnHit(ServerPlayerEntity player, Entity target) {
+        if (target.equals(player))
+            return;
         //Passive Rogue Backstab
         if (HelperMethods.isUnlocked("simplyskills:rogue",
                 SkillReferencePosition.rogueBackstab, player)) {

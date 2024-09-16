@@ -532,7 +532,7 @@ public class AbilityEffects {
     }
 
     public static void effectRagingJavelin(PlayerEntity player) {
-        if (player.age % 8 == 0) {
+        if (player.age % 8 == 0 && !player.getMainHandStack().isEmpty()) {
 
             String spellIdentifier = "simplyskills:passive_throw";
             int radius = 10;

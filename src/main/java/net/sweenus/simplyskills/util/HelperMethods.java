@@ -43,6 +43,7 @@ import net.spell_power.api.SpellSchools;
 import net.sweenus.simplyskills.SimplySkills;
 import net.sweenus.simplyskills.abilities.NecromancerAbilities;
 import net.sweenus.simplyskills.network.ModPacketHandler;
+import net.sweenus.simplyskills.util.compat.opac.OpacCompat;
 
 import java.util.*;
 
@@ -51,7 +52,7 @@ import static net.puffish.skillsmod.api.SkillsAPI.getCategory;
 public class HelperMethods {
 
 
-    //Check if we should be able to hit the target
+    // Check if we should be able to hit the target
     public static boolean checkFriendlyFire (LivingEntity livingEntity, PlayerEntity player) {
         if (livingEntity == null || player == null)
             return false;
@@ -61,6 +62,10 @@ public class HelperMethods {
         // Check if the player and the living entity are on the same team
         AbstractTeam playerTeam = player.getScoreboardTeam();
         AbstractTeam entityTeam = livingEntity.getScoreboardTeam();
+        if (HelperMethods.isOpacLoaded() && livingEntity instanceof PlayerEntity) {
+            // Is OpenPAC loaded? And are they team/ally member?
+            return OpacCompat.checkOpacFriendlyFire(livingEntity, player);
+        }
         if (playerTeam != null && entityTeam != null && livingEntity.isTeammate(player)) {
             // They are on the same team, so friendly fire should not be allowed
             return false;
@@ -74,8 +79,13 @@ public class HelperMethods {
         if (livingEntity instanceof Tameable tameable) {
             if (tameable.getOwner() != null) {
                 if (tameable.getOwner() != player
-                        && (tameable.getOwner() instanceof PlayerEntity ownerPlayer))
+                        && (tameable.getOwner() instanceof PlayerEntity ownerPlayer)) {
+                    if (HelperMethods.isOpacLoaded()) {
+                        // Is OpenPAC loaded? And is the pet owner a team/ally member?
+                        return OpacCompat.checkOpacFriendlyFire(ownerPlayer, player);
+                    }
                     return player.shouldDamagePlayer(ownerPlayer);
+                }
                 return tameable.getOwner() != player;
             }
             return true;
@@ -771,6 +781,10 @@ public class HelperMethods {
                 }
             }
         }
+    }
+
+    public static boolean isOpacLoaded() {
+        return FabricLoader.getInstance().isModLoaded("openpartiesandclaims");
     }
 
 }

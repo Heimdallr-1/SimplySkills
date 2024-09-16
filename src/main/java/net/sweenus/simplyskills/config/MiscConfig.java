@@ -12,5 +12,7 @@ public class MiscConfig implements ConfigData {
     public double promWarriorsDevotionAttackMulti = 1;
     @ConfigEntry.Gui.Tooltip
     public double promWarriorsDevotionAttackSpeedMulti = 0.9;
+    @ConfigEntry.Gui.Tooltip
+    public double promSkellaksCallPhysDmgMulti = 0.35;
 
 }

@@ -51,6 +51,8 @@ dependencies {
 
     modImplementation "curse.maven:immersive-melodies-904471:${project.immersive_melodies_version}"
 
+    modImplementation "curse.maven:open-parties-and-claims-636608:${project.openpac_version}"
+
     modImplementation files("build/libs/dependencies/amethyst_core-1.4.101.20.1.jar")
 
     modImplementation "curse.maven:archers-932359:${project.archers_version}"

@@ -3,6 +3,8 @@ package net.sweenus.simplyskills.abilities;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.attribute.EntityAttributes;
+import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.server.network.ServerPlayerEntity;
@@ -234,6 +236,21 @@ public class AbilityLogic {
         if (spellId !=null) {
             if (FabricLoader.getInstance().isModLoaded("prominent")) {
                 ProminenceAbilities.focusEffect(player, spellId);
+
+                // Make S'kellak's Call deal hybrid phys/fire damage
+                if (spellId.toString().contains("physical_eldritch_hammers") && targets != null) {
+                    for (Entity target : targets) {
+                        if (target instanceof LivingEntity) {
+                            DamageSource damageSource = player.getDamageSources().playerAttack(player);
+                            double multi = SimplySkills.miscConfig.promSkellaksCallPhysDmgMulti;
+                            double amount = player.getAttributeValue(EntityAttributes.GENERIC_ATTACK_DAMAGE) * multi;
+                            target.timeUntilRegen = 0;
+                            target.damage(damageSource, (float) amount);
+                            target.timeUntilRegen = 0;
+                        }
+                    }
+                }
+
             }
 
             if (HelperMethods.isUnlocked("simplyskills:cleric", SkillReferencePosition.clericMutualMending, player)

@@ -36,6 +36,7 @@ import net.minecraft.world.World;
 import net.puffish.attributesmod.AttributesMod;
 import net.puffish.attributesmod.util.Sign;
 import net.puffish.skillsmod.api.Category;
+import net.puffish.skillsmod.api.Experience;
 import net.puffish.skillsmod.api.Skill;
 import net.puffish.skillsmod.api.SkillsAPI;
 import net.spell_power.api.SpellPower;
@@ -475,7 +476,11 @@ public class HelperMethods {
     }
 
     public static void treeResetOnDeath(ServerPlayerEntity user ) {
-        if (SimplySkills.generalConfig.treeResetOnDeath) {
+        int expLoss = SimplySkills.generalConfig.treeExpLossOnDeath;
+        if (expLoss > 0) {
+            loseExpOnDeath(user, expLoss);
+        }
+        else if (SimplySkills.generalConfig.treeResetOnDeath) {
             resetAllTrees(user);
         }
     }
@@ -488,6 +493,47 @@ public class HelperMethods {
             if (FabricLoader.getInstance().isModLoaded("prominent"))
                 getCategory(new Identifier("puffish_skills:prom")).get().erase(user);
             else getCategory(new Identifier("simplyskills:tree")).get().erase(user);
+        }
+    }
+
+    public static void loseExpOnDeath(ServerPlayerEntity player, int percent) {
+        List<String> specialisations = SimplySkills.getSpecialisationsAsArray();
+        specialisations.add("simplyskills:ascendancy");
+        specialisations.add("simplyskills:tree");
+        for (String specialisation : specialisations) {
+            Optional<Category> categoryOpt = getCategory(new Identifier(specialisation));
+            if (categoryOpt.isPresent() && categoryOpt.get().isUnlocked(player)) {
+                Category category = categoryOpt.get();
+                Optional<Experience> experienceOpt = category.getExperience();
+                if (experienceOpt.isPresent()) {
+                    Experience experience = experienceOpt.get();
+                    int currentExp = experience.getCurrent(player);
+                    int currentLevel = experience.getLevel(player);
+                    int requiredExpForCurrentLevel = experience.getRequired(player, currentLevel - 1);
+                    int requiredExpForNextLevel = experience.getRequired(player, currentLevel);
+                    float experienceProgress = ((float) currentExp / requiredExpForNextLevel) * 100;
+
+                    // Calculate the value of X percent of experienceProgress
+                    double expToLose = (percent / 100.0) * currentExp;
+                    int newExp = currentExp - (int) expToLose;
+                    if (newExp < 0) {
+                        newExp = 0; // Ensure that experience does not go below zero
+                    }
+
+                    // Update the player's experience
+                    //experience.setTotal(player, newExp);
+                    if ((experience.getTotal(player)) - expToLose > 0) {
+                        experience.addTotal(player, (int) -expToLose);
+                        player.sendMessage(Text.literal("You have lost " + percent + "% of your skill level progress"));
+                    }
+                } else {
+                    // Debug
+                    System.out.println("Experience object not present for category: " + specialisation);
+                }
+            } else {
+                // Debug
+                System.out.println("Category not present: " + specialisation);
+            }
         }
     }
 
@@ -516,6 +562,10 @@ public class HelperMethods {
         for (Category category : (Iterable<Category>) SkillsAPI.streamUnlockedCategories(user)::iterator) {
             String categoryKey = "category" + categoryCount;
             nbt.putString(categoryKey, category.getId().toString());
+
+            // Store the total experience for the category
+            String expKey = "exp" + categoryCount;
+            category.getExperience().ifPresent(experience -> nbt.putInt(expKey, experience.getTotal(user)));
 
             for (Skill skill : (Iterable<Skill>) category.streamUnlockedSkills(user)::iterator) {
                 String skillKey = "skill" + skillCount;
@@ -551,14 +601,23 @@ public class HelperMethods {
             String category = nbt.getString(categoryKey);
             if (category.isEmpty()) continue;
 
+            int finalI = i;
             getCategory(new Identifier(category)).ifPresent(categoryObj -> {
                 categoryObj.unlock(user);
+
+                // Retrieve and set the total experience for the category
+                String expKey = "exp" + finalI;
+                if (nbt.contains(expKey)) {
+                    categoryObj.getExperience().ifPresent(experience -> experience.setTotal(user, nbt.getInt(expKey)));
+                }
+
                 for (int s = 0; s < size; s++) {
                     String skillKey = "skill" + s;
                     String skill = nbt.getString(skillKey);
                     if (skill.isEmpty()) continue;
 
                     categoryObj.getSkill(skill).ifPresent(skillObj -> skillObj.unlock(user));
+
                 }
             });
         }
@@ -576,6 +635,12 @@ public class HelperMethods {
                         if (!nbt.getString(skillKey).isEmpty())
                             nbt.remove(skillKey);
                     }
+                }
+
+                // Remove the experience key
+                String expKey = "exp" + i;
+                if (nbt.contains(expKey, NbtCompound.INT_TYPE)) {
+                    nbt.remove(expKey);
                 }
             }
             nbt.remove("player_uuid");

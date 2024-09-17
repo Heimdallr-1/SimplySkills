@@ -47,7 +47,7 @@ public class ElementalSurgeEffect extends StatusEffect {
                 int radius = SimplySkills.spellbladeConfig.signatureSpellbladeElementalSurgeRadius;
                 int chance = SimplySkills.spellbladeConfig.signatureSpellbladeElementalSurgeChance;
 
-                SignatureAbilities.castSpellEngineAOE(player, randomSpell, radius, chance, false);
+                SignatureAbilities.castSpellEngineAOE(player, randomSpell, radius, chance, false, false);
             }
         }
         super.applyUpdateEffect(livingEntity, amplifier);

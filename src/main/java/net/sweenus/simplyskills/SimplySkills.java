@@ -107,7 +107,7 @@ public class SimplySkills implements ModInitializer {
 
 
         ServerPlayConnectionEvents.JOIN.register((handler, sender, server) -> {
-            if (generalConfig.disableDefaultPuffishTrees) {
+            if (generalConfig.disableDefaultPuffishTrees || FabricLoader.getInstance().isModLoaded("prominent")) {
                 processPlayer(handler.player);
             }
             ModPacketHandler.sendSignatureAbility(handler.player);

@@ -50,8 +50,8 @@ public class ElementalImpactEffect extends StatusEffect {
                 int slownessDuration = SimplySkills.spellbladeConfig.signatureSpellbladeElementalImpactSlownessDuration;
                 int slownessAmplifier = SimplySkills.spellbladeConfig.signatureSpellbladeElementalImpactSlownessAmplifier;
 
-                SignatureAbilities.castSpellEngineAOE(player, randomSpell, radius, chance, true);
-                SignatureAbilities.castSpellEngineAOE(player, randomSpell2, radius, (int)(chance * 0.35), true);
+                SignatureAbilities.castSpellEngineAOE(player, randomSpell, radius, chance, true, false);
+                SignatureAbilities.castSpellEngineAOE(player, randomSpell2, radius, (int)(chance * 0.35), true, false);
 
                 if (HelperMethods.isUnlocked("simplyskills:spellblade",
                         SkillReferencePosition.spellbladeSpecialisationElementalImpactMagnet, player)){

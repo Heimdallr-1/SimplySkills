@@ -12,6 +12,8 @@ public class GeneralConfig implements ConfigData {
     @ConfigEntry.Gui.Tooltip
     public boolean treeResetOnDeath = false;
     @ConfigEntry.Gui.Tooltip
+    public int treeExpLossOnDeath = 0;
+    @ConfigEntry.Gui.Tooltip
     public boolean disableDefaultPuffishTrees = false;
     @ConfigEntry.Gui.Tooltip
     public boolean enableBuildSharing = false;

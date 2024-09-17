@@ -8,6 +8,9 @@ import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.sound.SoundCategory;
+import net.minecraft.util.Identifier;
+import net.puffish.skillsmod.api.Category;
+import net.puffish.skillsmod.api.Experience;
 import net.sweenus.simplyskills.SimplySkills;
 import net.sweenus.simplyskills.abilities.*;
 import net.sweenus.simplyskills.abilities.compat.ProminenceInternalAbilities;
@@ -22,6 +25,11 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.ModifyVariable;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
+
+import java.util.List;
+import java.util.Optional;
+
+import static net.puffish.skillsmod.api.SkillsAPI.getCategory;
 
 @Mixin(ServerPlayerEntity.class)
 public abstract class ServerPlayerEntityMixin {
@@ -361,7 +369,7 @@ public abstract class ServerPlayerEntityMixin {
             if (HelperMethods.isUnlocked("simplyskills:tree",
                     SkillReferencePosition.initiateLightningRod, player)
                     && player.age %40 == 0 && player.hasStatusEffect(EffectRegistry.SOULSHOCK)) {
-                SignatureAbilities.castSpellEngineAOE(player, "simplyskills:lightning_rod", 5, 100, false);
+                SignatureAbilities.castSpellEngineAOE(player, "simplyskills:lightning_rod", 5, 100, false, true);
             }
 
         }

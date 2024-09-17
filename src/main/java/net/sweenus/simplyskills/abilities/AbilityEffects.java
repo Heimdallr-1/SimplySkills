@@ -462,7 +462,7 @@ public class AbilityEffects {
             String spellIdentifier = "simplyskills:fire_meteor_small";
 
 
-            if (SignatureAbilities.castSpellEngineAOE(player, spellIdentifier, radius, chance, true)) {
+            if (SignatureAbilities.castSpellEngineAOE(player, spellIdentifier, radius, chance, true, false)) {
                 int renewalChance = 0;
                 if (HelperMethods.isUnlocked("simplyskills:wizard",
                         SkillReferencePosition.wizardSpecialisationMeteorShowerRenewingWrath, player))
@@ -538,7 +538,7 @@ public class AbilityEffects {
             int radius = 10;
             int chance = 80;
 
-            if (SignatureAbilities.castSpellEngineAOE(player, spellIdentifier, radius, chance, true)) {
+            if (SignatureAbilities.castSpellEngineAOE(player, spellIdentifier, radius, chance, true, false)) {
             }
 
         }

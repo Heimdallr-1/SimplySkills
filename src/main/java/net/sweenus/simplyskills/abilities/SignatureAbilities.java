@@ -10,6 +10,7 @@ import net.minecraft.client.MinecraftClient;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.SpawnReason;
+import net.minecraft.entity.passive.PassiveEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.PacketByteBuf;
@@ -613,7 +614,7 @@ public class SignatureAbilities {
         }
     }
 
-    public static boolean castSpellEngineAOE(PlayerEntity player, String spellIdentifier, int radius, int chance, boolean singleTarget) {
+    public static boolean castSpellEngineAOE(PlayerEntity player, String spellIdentifier, int radius, int chance, boolean singleTarget, boolean ignorePassive) {
 
         // -- Cast spell at nearby targets --
 
@@ -627,12 +628,14 @@ public class SignatureAbilities {
         Box box = HelperMethods.createBox(player, radius);
         for (Entity entities : player.getWorld().getOtherEntities(player, box, EntityPredicates.VALID_LIVING_ENTITY)) {
             if (entities != null) {
+                if (entities instanceof PassiveEntity && ignorePassive)
+                    continue; // Skip passive entities if ignorePassive is true
                 if ((entities instanceof LivingEntity le) && HelperMethods.checkFriendlyFire(le, player)) {
 
                     if (player.getRandom().nextInt(100) < chance)
                         list.add(le);
                     if (singleTarget)
-                        break;
+                        break; // Stop after adding one target if singleTarget is true
 
                 }
             }

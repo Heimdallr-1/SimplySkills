@@ -181,7 +181,7 @@ public class CrusaderAbilities {
             String spellIdentifier = "simplyskills:paladins_judgement";
 
 
-            if (SignatureAbilities.castSpellEngineAOE(player, spellIdentifier, radius, chance, true)) {
+            if (SignatureAbilities.castSpellEngineAOE(player, spellIdentifier, radius, chance, true, false)) {
                 if (HelperMethods.isUnlocked("simplyskills:crusader", SkillReferencePosition.crusaderSpecialisationHeavensmithsCallExhaust, player))
                     HelperMethods.decrementStatusEffects(player, EffectRegistry.EXHAUSTION, exhaustStacksRemoved);
                 if (HelperMethods.isUnlocked("simplyskills:crusader", SkillReferencePosition.crusaderSpecialisationHeavensmithsCallMighty, player))

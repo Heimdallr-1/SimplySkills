@@ -325,6 +325,8 @@
   "text.autoconfig.simplyskills.option.client.enableAscendancy.@Tooltip" :                                    "Enabled by default, the Ascendancy tree is\nunlocked after spending the maximum points in\nthe base skill tree, and allows long-term progression.",
   "text.autoconfig.simplyskills.option.client.treeResetOnDeath" :                                             "Reset skill trees on death",
   "text.autoconfig.simplyskills.option.client.treeResetOnDeath.@Tooltip" :                                    "Resets all Simply Skills skill trees upon death. \nThis erases all points and experience invested.",
+  "text.autoconfig.simplyskills.option.client.treeExpLossOnDeath" :                                             "Lose skill tree experience on death",
+  "text.autoconfig.simplyskills.option.client.treeExpLossOnDeath.@Tooltip" :                                    "Subtracts a percentage of current experience upon death, from all skill trees. \nThe value is subtracted from the current experience, and will never subtract below 0.",
   "text.autoconfig.simplyskills.option.client.disableDefaultPuffishTrees" :                                   "Disable Default Puffish Skill trees",
   "text.autoconfig.simplyskills.option.client.disableDefaultPuffishTrees.@Tooltip" :                          "Disables the default 'Mining' & 'Combat' trees that come\npackaged with Puffish Skills.",
   "text.autoconfig.simplyskills.option.client.enableBuildSharing" :                                           "Enable build sharing",

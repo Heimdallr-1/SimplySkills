@@ -59,6 +59,8 @@ public class HelperMethods {
             return false;
         if (!checkEntityBlacklist(livingEntity, player))
             return false;
+        if (livingEntity == player)
+            return false;
 
         // Check if the player and the living entity are on the same team
         AbstractTeam playerTeam = player.getScoreboardTeam();
